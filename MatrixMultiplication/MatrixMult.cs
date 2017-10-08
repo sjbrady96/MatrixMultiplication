@@ -4,38 +4,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*Sean Brady
- * 9/22/2017
+/**
+ * Matrix Multiplication: two 2D arrays of random size made up of random integers
  * COSC 450 Programming Excercise 1
- * Matrix Multiplication: two 2D arrays of random integers
-*/
+ * 
+ * @author Sean Brady
+ * @version 1.1 10/07/2017
+ **/
 
 namespace MatrixMultiplication
 {
     public class MatrixMult
     {
         static Random rnd = new Random();
+        static int iteration = 1;
 
         static void Main(string[] args)
         {
-            //all of the 2D arrays in this program have a fixed size of 3 rows and 4 columns
-            int[,] arrA = new int[3, 4]; 
-            int[,] arrB = new int[3, 4]; 
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("PROGRAM ITERATION #" + iteration + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            int rowsA = rnd.Next(1, 11);
+            int colsA = rnd.Next(1, 11);
 
-            Console.WriteLine("this program performs matrix multiplication\npress ENTER to begin");
+            int rowsB = colsA;
+            int colsB = rowsA;
+
+            //inital array sizes
+            int[,] arrA = new int[rowsA, colsA]; 
+            int[,] arrB = new int[rowsB, colsB]; 
+
+            Console.WriteLine("press ENTER to begin");
             Console.Read();
 
-            Console.WriteLine("array A:");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("array A (" + rowsA + ", " + colsA + "):");
             PrintArray(FillArray(arrA));
 
-            Console.WriteLine("\narray B:");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("\narray B (" + rowsB + ", " + colsB + "):");
             PrintArray(FillArray(arrB));
 
-            Console.WriteLine("\nproduct of A and B:");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("\narray product (" + rowsA + ", " + colsB + "):");
             PrintArray(MultiplyMatrix(arrA, arrB));
 
-            Console.Write("\ntype any key to exit");
-            Console.ReadKey();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\ntype 'continue' then press ENTER to run the program again\n");
+            Console.Read();
+
+            if (Console.ReadLine() == "continue")
+            {
+                iteration++;
+                Console.WriteLine();
+                Main(args);
+            }
         }
 
         //fill a 2D array with random integers
@@ -45,7 +68,7 @@ namespace MatrixMultiplication
             {
                 for(int j = 0; j < arr.GetLength(1); j++)
                 {
-                    arr[i, j] = rnd.Next(1, 11);
+                    arr[i, j] = rnd.Next(0, 11);
                 }
             }
             return arr;
@@ -67,14 +90,14 @@ namespace MatrixMultiplication
         //multiply two 2D arrays together
         static public int[,] MultiplyMatrix(int[,] A, int[,] B)
         {
-            int[,] product = new int[3, 4];
+            int[,] product = new int[A.GetLength(0), B.GetLength(1)];
 
-            for (int i = 0; i < 3; i++) //array A rows
+            for (int i = 0; i < A.GetLength(0); i++) //array A rows
             {
-                for(int j = 0; j < 4; j++) //array B columns
+                for(int j = 0; j < B.GetLength(1); j++) //array B columns
                 {
                     product[i, j] = 0;
-                    for(int k = 0; k < 3; k++) //array A columns and array B rows
+                    for(int k = 0; k < A.GetLength(1); k++) //array A columns and array B rows
                     {
                         product[i, j] += A[i, k] * B[k, j]; //fill product array
                     }
